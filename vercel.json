@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "buildCommand": "cd kodecamp-enrollment && npm install && npm run build",
+  "outputDirectory": "kodecamp-enrollment/dist",
+  "installCommand": "cd kodecamp-enrollment && npm install"
+}
