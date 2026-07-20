@@ -1,17 +1,26 @@
-# KodeCamp Student Dashboard
+# KodeCamp 6.0 — Stage 4: Student Enrollment Portal with Routing
 
-This repository contains the Student Enrollment Portal for KodeCamp. The current
-branch `feature/react-router` adds client-side routing (React Router) to the
-enrollment app and new pages for Home, Student Detail, Enroll, and 404 handling.
+This React application extends the student enrollment portal with client-side routing using React Router.
 
-See `kodecamp-enrollment/` for the app source.
+## What changed
+- Added a shared `Navbar` with `NavLink` navigation for Home and Enroll.
+- Added route-based pages for the roster, student detail view, enroll form, and a 404 page.
+- Enabled navigation from student cards to `/students/:id` with `Link`.
+- Kept roster state in `App.jsx` so enrollments appear immediately on the home page.
 
-To run locally:
+## Features
+- Fetches student roster from the Random User API.
+- Allows enrolling a new student and redirects back to the home page.
+- Shows student detail pages using route params.
+- Includes a friendly 404 page for unknown routes.
 
+## Setup & Run
 ```bash
-cd kodecamp-enrollment
 npm install
-npm run dev -- --host
+npm run dev
 ```
 
-This README was merged automatically to resolve unrelated-history merge.
+## Build
+```bash
+npm run build
+```
