@@ -1,26 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { Route, Routes } from 'react-router-dom'
 import Header from './components/Header'
-import StudentList from './components/StudentList'
-import EnrollForm from './components/EnrollForm'
-import StatusMessage from './components/StatusMessage'
-import ClassButton from './components/ClassButton'
-
-const TRACKS = ["Frontend", "Backend", "Mobile", "Data"]
-const SEED_STUDENTS = [
-  { id: "seed-1", firstName: "Amara", lastName: "Johnson", email: "amara@kodecamp.dev", track: "Frontend", score: 92, isActive: true, avatar: "https://i.pravatar.cc/150?img=1" },
-  { id: "seed-2", firstName: "Chidi", lastName: "Okafor", email: "chidi@kodecamp.dev", track: "Backend", score: 67, isActive: false, avatar: "https://i.pravatar.cc/150?img=3" }
-]
-
-function getAverage(students) {
-  if (students.length === 0) return 0
-  return students.reduce((sum, s) => sum + s.score, 0) / students.length
-}
-
-import { useState, useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
-import Header from './components/Header'
-import StudentList from './components/StudentList'
-import EnrollForm from './components/EnrollForm'
 import StatusMessage from './components/StatusMessage'
 import ClassButton from './components/ClassButton'
 import Navbar from './components/Navbar'
@@ -29,27 +9,27 @@ import StudentDetailPage from './pages/StudentDetailPage'
 import EnrollPage from './pages/EnrollPage'
 import NotFoundPage from './pages/NotFoundPage'
 
-const TRACKS = ["Frontend", "Backend", "Mobile", "Data"]
+const TRACKS = ['Frontend', 'Backend', 'Mobile', 'Data']
 const SEED_STUDENTS = [
   {
-    id: "seed-1",
-    firstName: "Amara",
-    lastName: "Johnson",
-    email: "amara@kodecamp.dev",
-    track: "Frontend",
+    id: 'seed-1',
+    firstName: 'Amara',
+    lastName: 'Johnson',
+    email: 'amara@kodecamp.dev',
+    track: 'Frontend',
     score: 92,
     isActive: true,
-    avatar: "https://i.pravatar.cc/150?img=1"
+    avatar: 'https://i.pravatar.cc/150?img=1'
   },
   {
-    id: "seed-2",
-    firstName: "Chidi",
-    lastName: "Okafor",
-    email: "chidi@kodecamp.dev",
-    track: "Backend",
+    id: 'seed-2',
+    firstName: 'Chidi',
+    lastName: 'Okafor',
+    email: 'chidi@kodecamp.dev',
+    track: 'Backend',
     score: 67,
     isActive: false,
-    avatar: "https://i.pravatar.cc/150?img=3"
+    avatar: 'https://i.pravatar.cc/150?img=3'
   }
 ]
 
