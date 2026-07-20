@@ -17,15 +17,13 @@ const StudentCard = ({ student }) => {
   return (
     <div className={cardClass}>
       <img src={avatar} alt={`${firstName} ${lastName}`} />
-      <h3>
+      <h3 className="card-name">
         <Link to={`/students/${student.id}`}>{`${firstName} ${lastName}`}</Link>
       </h3>
       <div className="detail">{`${track} · ${email}`}</div>
       <div className="detail">{`Score: ${score} (Grade: ${grade})`}</div>
       <span className={badgeClass}>{isActive ? 'Active' : 'Inactive'}</span>
-      <div style={{ marginTop: '0.5rem' }}>
-        <Link to={`/students/${student.id}`} className="btn btn-primary">View</Link>
-      </div>
+      <Link to={`/students/${student.id}`} className="card-view-link">View Details →</Link>
     </div>
   )
 }

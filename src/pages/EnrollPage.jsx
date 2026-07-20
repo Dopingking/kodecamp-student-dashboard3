@@ -11,8 +11,10 @@ const EnrollPage = ({ tracks, onEnroll }) => {
 
   return (
     <div>
-      <h2>Enroll Student</h2>
-      <EnrollForm tracks={tracks} onEnroll={handleEnrollAndRedirect} />
+      <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: '#0f172a' }}>➕ Enroll New Student</h2>
+      <div className="enroll-form">
+        <EnrollForm tracks={tracks} onEnroll={handleEnrollAndRedirect} />
+      </div>
     </div>
   )
 }

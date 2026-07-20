@@ -3,18 +3,20 @@ import StudentList from '../components/StudentList'
 
 const HomePage = ({ students, tracks, onEnroll, loading, error, refreshRoster }) => {
   return (
-    <div>
+    <div className="app-shell">
       <EnrollForm tracks={tracks} onEnroll={onEnroll} />
-      {loading && <p>Loading roster...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {loading && <div className="status loading">Loading roster…</div>}
+      {error && <div className="status error">{error}</div>}
       {!loading && !error && (
-        <StudentList students={students} title="Student Roster">
-          <div className="list-footer">End of roster — {students.length} total students</div>
-        </StudentList>
+        <div style={{ marginTop: '1.5rem' }}>
+          <StudentList students={students} title="Student Roster">
+            <div className="list-footer">End of roster — {students.length} total students</div>
+          </StudentList>
+          <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+            <button onClick={refreshRoster} className="btn btn-secondary">↻ Refresh Roster</button>
+          </div>
+        </div>
       )}
-      <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-        <button onClick={refreshRoster} className="btn btn-secondary">Refresh Roster</button>
-      </div>
     </div>
   )
 }

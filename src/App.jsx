@@ -119,10 +119,6 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
-      <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-        <ClassButton title="Refresh Roster" onClick={refreshRoster} className="btn-secondary" />
-        <p style={{ fontSize: '0.8rem', marginTop: '0.5rem', color: '#64748b' }}>(Class component example)</p>
-      </div>
     </div>
   )
 }
