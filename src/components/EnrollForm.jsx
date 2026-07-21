@@ -1,96 +1,242 @@
-import { useState, useRef } from 'react'
-import Button from './Button'
+import { useState, useRef, useEffect } from "react";
+import {
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Button,
+  Grid,
+  Typography,
+  Paper,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
 
 const EnrollForm = ({ tracks, onEnroll }) => {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [track, setTrack] = useState(tracks[0] || '')
-  const [score, setScore] = useState('')
-  const emailRef = useRef(null)
-  const activeRef = useRef(null)
+  const firstNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const activeRef = useRef(null);
 
-  const [errors, setErrors] = useState({})
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [track, setTrack] = useState(tracks[0] || "");
+  const [score, setScore] = useState("");
+  const [errors, setErrors] = useState({});
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    const newErrors = {}
-    if (!firstName.trim()) newErrors.firstName = 'First name is required'
-    if (!lastName.trim()) newErrors.lastName = 'Last name is required'
-    const scoreNum = Number(score)
-    if (isNaN(scoreNum) || scoreNum < 0 || scoreNum > 100) newErrors.score = 'Score must be between 0 and 100'
-    const email = emailRef.current?.value?.trim() || ''
-    if (!email) newErrors.email = 'Email is required'
-    else if (!email.includes('@')) newErrors.email = 'Email must contain "@"'
+  useEffect(() => {
+    firstNameRef.current?.focus();
+  }, []);
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
-      return
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newErrors = {};
+
+    if (!firstName.trim())
+      newErrors.firstName = "First name is required";
+
+    if (!lastName.trim())
+      newErrors.lastName = "Last name is required";
+
+    const scoreNum = Number(score);
+
+    if (
+      Number.isNaN(scoreNum) ||
+      scoreNum < 0 ||
+      scoreNum > 100
+    ) {
+      newErrors.score = "Score must be between 0 and 100";
+    }
+
+    const email = emailRef.current?.value?.trim() || "";
+
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!email.includes("@")) {
+      newErrors.email = "Invalid email";
+    }
+
+    if (Object.keys(newErrors).length) {
+      setErrors(newErrors);
+      return;
     }
 
     const newStudent = {
-      id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
+      id: crypto.randomUUID
+        ? crypto.randomUUID()
+        : Date.now().toString(),
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       email,
       track,
       score: scoreNum,
       isActive: activeRef.current?.checked ?? false,
-      avatar: `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70) + 1}`
-    }
-    onEnroll(newStudent)
+      avatar: `https://i.pravatar.cc/150?img=${
+        Math.floor(Math.random() * 70) + 1
+      }`,
+    };
 
-    setFirstName('')
-    setLastName('')
-    setTrack(tracks[0] || '')
-    setScore('')
-    if (emailRef.current) emailRef.current.value = ''
-    if (activeRef.current) activeRef.current.checked = false
-    setErrors({})
-  }
+    onEnroll(newStudent);
 
-  const previewName = firstName || lastName ? `${firstName} ${lastName}`.trim() : 'No name'
-  const previewTrack = track || 'No track'
-  const previewScore = score || '?'
-  const hasErrors = Object.keys(errors).length > 0
+    setFirstName("");
+    setLastName("");
+    setTrack(tracks[0] || "");
+    setScore("");
+    setErrors({});
+
+    if (emailRef.current) emailRef.current.value = "";
+    if (activeRef.current) activeRef.current.checked = false;
+
+    firstNameRef.current?.focus();
+  };
+
+  const previewName =
+    firstName || lastName
+      ? `${firstName} ${lastName}`.trim()
+      : "No name";
+
+  const previewTrack = track || "No track";
+  const previewScore = score || "?";
 
   return (
-    <form className="enroll-form" onSubmit={handleSubmit}>
-      <h2>Enroll New Student</h2>
-      <div className="form-grid">
-        <div className="form-group">
-          <label htmlFor="firstName">First Name *</label>
-          <input id="firstName" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="First name" />
-          {errors.firstName && <span className="error">{errors.firstName}</span>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="lastName">Last Name *</label>
-          <input id="lastName" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Last name" />
-          {errors.lastName && <span className="error">{errors.lastName}</span>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="track">Track *</label>
-          <select id="track" value={track} onChange={(e) => setTrack(e.target.value)}>
-            {tracks.map(t => <option key={t} value={t}>{t}</option>)}
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="score">Score (0–100) *</label>
-          <input id="score" type="number" min="0" max="100" value={score} onChange={(e) => setScore(e.target.value)} placeholder="Score" />
-          {errors.score && <span className="error">{errors.score}</span>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email (uncontrolled) *</label>
-          <input id="email" type="email" defaultValue="" ref={emailRef} placeholder="email@example.com" />
-          {errors.email && <span className="error">{errors.email}</span>}
-        </div>
-        <div className="form-group" style={{ flexDirection: 'row', alignItems: 'center', gap: '0.5rem' }}>
-          <label htmlFor="active">Active (uncontrolled)</label>
-          <input id="active" type="checkbox" defaultChecked={false} ref={activeRef} />
-        </div>
-      </div>
-      <div className="preview">Preview: {previewName} — {previewTrack} ({previewScore})</div>
-      <Button title="Enroll" onClick={handleSubmit} className="btn-primary" disabled={hasErrors} />
-    </form>
-  )
-}
-export default EnrollForm
+    <Paper
+      elevation={4}
+      sx={{
+        p: 4,
+        borderRadius: 3,
+        mt: 3,
+      }}
+    >
+      <Typography
+        variant="h5"
+        fontWeight="bold"
+        mb={3}
+      >
+        Enroll New Student
+      </Typography>
+            <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <TextField
+            fullWidth
+            label="First Name"
+            inputRef={firstNameRef}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            error={!!errors.firstName}
+            helperText={errors.firstName}
+          />
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 6 }}>
+          <TextField
+            fullWidth
+            label="Last Name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            error={!!errors.lastName}
+            helperText={errors.lastName}
+          />
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 6 }}>
+          <FormControl fullWidth>
+            <InputLabel>Track</InputLabel>
+            <Select
+              value={track}
+              label="Track"
+              onChange={(e) => setTrack(e.target.value)}
+            >
+              {tracks.map((item) => (
+                <MenuItem key={item} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 6 }}>
+          <TextField
+            fullWidth
+            type="number"
+            label="Score"
+            inputProps={{
+              min: 0,
+              max: 100,
+            }}
+            value={score}
+            onChange={(e) => setScore(e.target.value)}
+            error={!!errors.score}
+            helperText={errors.score}
+          />
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 6 }}>
+          <TextField
+            fullWidth
+            type="email"
+            label="Email"
+            inputRef={emailRef}
+            error={!!errors.email}
+            helperText={errors.email}
+          />
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 6 }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                inputRef={activeRef}
+              />
+            }
+            label="Active Student"
+          />
+        </Grid>
+
+        <Grid size={{ xs: 12 }}>
+          <Paper
+            variant="outlined"
+            sx={{
+              p: 2,
+              bgcolor: "#f8fafc",
+            }}
+          >
+            <Typography fontWeight="bold">
+              Preview
+            </Typography>
+
+            <Typography>
+              {previewName}
+            </Typography>
+
+            <Typography>
+              {previewTrack}
+            </Typography>
+
+            <Typography>
+              Score: {previewScore}
+            </Typography>
+          </Paper>
+        </Grid>
+
+        <Grid size={{ xs: 12 }}>
+          <Button
+            fullWidth
+            variant="contained"
+            size="large"
+            onClick={handleSubmit}
+            sx={{
+              py: 1.5,
+              mt: 1,
+            }}
+          >
+            Enroll Student
+          </Button>
+        </Grid>
+      </Grid>
+    </Paper>
+  );
+};
+
+export default EnrollForm;
